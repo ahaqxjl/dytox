@@ -29,6 +29,16 @@ includes continuum for data loader made for continual learning, and `timm`.
 
 Note that this code is heavily based on the great codebase of [DeiT](https://github.com/facebookresearch/deit).
 
+## 3090Ti显卡CUDA11.4运行注意事项
+
+使用下面的命令安装依赖：
+```bash
+pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 -f https://download.pytorch.org/whl/torch_stable.html
+# 可以使用pip install -i https://pypi.tuna.tsinghua.edu.cn/simple some-package进行加速
+pip install timm==0.4.9
+pip install continuum==1.0.27
+```
+
 # Launching an experiment
 
 CIFAR100 dataset will be auto-downloaded, however you must download yourself

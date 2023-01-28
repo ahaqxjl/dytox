@@ -60,6 +60,9 @@ bash train.sh 0,1 \
     --data-path MY_PATH_TO_DATASET \
     --output-basedir PATH_TO_SAVE_CHECKPOINTS \
     --memory-size 1000
+    
+# 单GPU运行并且将内容输出到日志
+bash train.sh 0 --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS --memory-size 1000 > output.log 2>&1 &
 ```
 
 Folders will be auto-created with the results at

@@ -5,7 +5,7 @@ import os
 import warnings
 
 from continuum import ClassIncremental
-from continuum.datasets import CIFAR100, ImageNet100, ImageFolderDataset
+from continuum.datasets import CIFAR100, ImageFolderDataset, ImageNet100
 from timm.data import create_transform
 from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
 from torchvision import transforms
@@ -38,6 +38,22 @@ class ImageNet1000(ImageFolderDataset):
             self.data_path = os.path.join(self.data_path, "train")
         else:
             self.data_path = os.path.join(self.data_path, "val")
+        return super().get_data()
+
+
+class MealDataset(ImageFolderDataset):
+    def __init__(
+        self,
+        data_path: str,
+        train: bool = True,
+    ):
+        super().__init__(data_path=data_path, train=train, download=False)
+
+    def get_data(self):
+        if self.train:
+            self.data_path = os.path.join(self.data_path, "real_50_train")
+        else:
+            self.data_path = os.path.join(self.data_path, "real_50_val")
         return super().get_data()
 
 
@@ -91,11 +107,13 @@ def build_dataset(is_train, args):
         dataset = CIFAR100(args.data_path, train=is_train, download=True)
     elif args.data_set.lower() == 'imagenet100':
         dataset = ImageNet100(
-            args.data_path, train=is_train,
+            args.data_path, train=is_train, download=True,
             data_subset=os.path.join('./imagenet100_splits', "train_100.txt" if is_train else "val_100.txt")
         )
     elif args.data_set.lower() == 'imagenet1000':
         dataset = ImageNet1000(args.data_path, train=is_train)
+    elif args.data_set.lower() == "meal":
+        dataset = MealDataset(args.data_path, train=is_train)
     else:
         raise ValueError(f'Unknown dataset {args.data_set}.')
 
@@ -122,6 +140,9 @@ def build_transform(is_train, args):
             transform = create_transform(
                 input_size=args.input_size,
                 is_training=True,
+                # scale=(0.2, 0.8),
+                # hflip=0.5,
+                # vflip=0.5,
                 color_jitter=args.color_jitter,
                 auto_augment=args.aa,
                 interpolation='bicubic',
@@ -137,6 +158,10 @@ def build_transform(is_train, args):
 
             if args.input_size == 32 and args.data_set == 'CIFAR':
                 transform.transforms[-1] = transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761))
+
+            # transform.transforms.insert(0, transforms.Resize(384))
+            # transform.transforms.insert(1, transforms.RandomRotation(15, expand=True))
+
             return transform
 
         t = []

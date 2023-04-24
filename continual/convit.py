@@ -93,6 +93,7 @@ class Mlp(nn.Module):
 
 
 class GPSA(nn.Module):
+    # Jordan: Gated positional self attention
     def __init__(self, dim, num_heads=8, qkv_bias=False, qk_scale=None, attn_drop=0., proj_drop=0.,
                  locality_strength=1., use_local_init=True, fc=None):
         super().__init__()
@@ -194,6 +195,7 @@ class GPSA(nn.Module):
 
 
 class MHSA(nn.Module):
+    # Jordan: Multi-head self attention
     def __init__(self, dim, num_heads=8, qkv_bias=False, qk_scale=None, attn_drop=0., proj_drop=0., fc=None):
         super().__init__()
         self.num_heads = num_heads
@@ -565,6 +567,7 @@ class ConVit(nn.Module):
 
         blocks = []
 
+        # Jordan DyTox默认为base
         if ca_type == 'base':
             ca_block = ClassAttention
         elif ca_type == 'jointca':
@@ -575,6 +578,7 @@ class ConVit(nn.Module):
         for layer_index in range(depth):
             if layer_index < local_up_to_layer:
                 # Convit
+                # Jordan 前面都是SAB，local_up_to_layer在DyTox中默认是5，因此前5个都是sab
                 block = Block(
                     dim=embed_dim, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, qk_scale=qk_scale,
                     drop=drop_rate, attn_drop=attn_drop_rate, drop_path=dpr[layer_index], norm_layer=norm_layer,
@@ -589,6 +593,7 @@ class ConVit(nn.Module):
                 )
             else:
                 # CaiT
+                # Jordan DyTox默认开启class_attention, attention_type为ca_block（DyTox默认为ClassAttention
                 block = Block(
                     dim=embed_dim, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, qk_scale=qk_scale,
                     drop=drop_rate, attn_drop=attn_drop_rate, drop_path=dpr[layer_index], norm_layer=norm_layer,

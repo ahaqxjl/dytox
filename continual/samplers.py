@@ -102,14 +102,18 @@ class RASamplerNoDist(RASampler):
 
 
 def get_sampler(dataset_train, dataset_val, args):
+    print(f'args.distributed: {args.distributed}')
+    print(f'args.repeated_aug: {args.repeated_aug}')
     if args.distributed:
         num_tasks = utils.get_world_size()
         global_rank = utils.get_rank()
         if args.repeated_aug:
+            print(f'=======================================distributed with repeated_aug=====================================================================================')
             sampler_train = RASampler(
                 dataset_train, num_replicas=num_tasks, rank=global_rank, shuffle=True
             )
         else:
+            print(f'=======================================distributed without repeated_aug=====================================================================================')
             sampler_train = torch.utils.data.DistributedSampler(
                 dataset_train, num_replicas=num_tasks, rank=global_rank, shuffle=True
             )

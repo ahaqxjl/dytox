@@ -56,10 +56,17 @@ def get_backbone(args):
 
 
 def get_loaders(dataset_train, dataset_val, args, finetuning=False):
+    print(f'finetuning: {finetuning}')
     sampler_train, sampler_val = samplers.get_sampler(dataset_train, dataset_val, args)
+    print(f'sampler_train len: {len(sampler_train)}')
+    print(f'sampler_val len: {len(sampler_val)}')
 
+    # TODO real_50数据集上此处返回长度为0的data loader
+    # real_50时，finetuning为false，ft_no_sampling为true，batchsize为10，num_workers为10，pin_mem为true
     loader_train = torch.utils.data.DataLoader(
-        dataset_train, sampler=None if (finetuning and args.ft_no_sampling) else sampler_train,
+        dataset_train,
+        # real_50数据集很小，2-2增量时不使用抽样，但不使用sampler后面就报错了，这里暂时保留sampler，8-8增量时，可以使用抽样
+        sampler=None if (finetuning and args.ft_no_sampling) else sampler_train,
         batch_size=args.batch_size,
         num_workers=args.num_workers,
         pin_memory=args.pin_mem,
@@ -74,6 +81,8 @@ def get_loaders(dataset_train, dataset_val, args, finetuning=False):
         drop_last=False
     )
 
+    print(f'loader_train len: {len(loader_train)}')
+    print(f'loader_val len: {len(loader_val)}')
     return loader_train, loader_val
 
 

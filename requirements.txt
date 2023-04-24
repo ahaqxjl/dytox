@@ -1,4 +1,4 @@
-torch>=1.7.0
-torchvision>=0.8.1
-timm>=0.3.2
-continuum>=1.0.27
+torch==1.12.0
+torchvision==0.13
+timm==0.4.9
+continuum==1.0.27

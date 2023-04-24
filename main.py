@@ -32,7 +32,15 @@ from continual.sam import SAM
 from continual.datasets import build_dataset
 from continual.engine import eval_and_log, train_one_epoch
 from continual.losses import bce_with_logits, soft_bce_with_logits
+from lcutil.log_util import get_logger
+from lcutil.timing_util import timing
+import logging
 
+
+TOME_R = 8
+
+
+mylogger = get_logger('dytox_tome', Path(__file__).parent, logging.INFO)
 warnings.filterwarnings("ignore")
 
 
@@ -324,6 +332,7 @@ def get_args_parser():
     return parser
 
 
+@timing(mylogger)
 def main(args):
     print(args)
     logger = Logger(list_subsets=['train', 'test'])
@@ -338,21 +347,30 @@ def main(args):
 
     cudnn.benchmark = True
 
+    # Jordan: 构建数据集
     scenario_train, args.nb_classes = build_dataset(is_train=True, args=args)
     scenario_val, _ = build_dataset(is_train=False, args=args)
 
     mixup_fn = None
     mixup_active = args.mixup > 0 or args.cutmix > 0. or args.cutmix_minmax is not None
 
+    # Jordan: 初始化增量学习模型
+    # Jordan: 此处加载模型，通过读取配置文件，生成网络，例如DyTox是5个SAB，1个TAB，因此DyTox配置文件中，local_up_to_layer设置为5，depth设置为6
     model = factory.get_backbone(args)
+    
+    # patch model with tome
+    # patch_model_with_tome(model)
+    
     model.head = Classifier(
         model.embed_dim, args.nb_classes, args.initial_increment,
         args.increment, len(scenario_train)
     )
+    # print(f'model.r after reset head: {model.r}')
     model.to(device)
     # model will be on multiple GPUs, while model_without_ddp on a single GPU, but
     # it's actually the same model.
     model_without_ddp = model
+    # print(f'model_without_ddp.r after set {model_without_ddp.r}')
     n_parameters = sum(p.numel() for p in model_without_ddp.parameters() if p.requires_grad)
 
     # Start the logging process on disk ----------------------------------------
@@ -388,6 +406,7 @@ def main(args):
 
     print('number of params:', n_parameters)
 
+    # Jordan: ？？？这里不明白
     loss_scaler = scaler.ContinualScaler(args.no_amp)
 
     criterion = LabelSmoothingCrossEntropy()
@@ -431,7 +450,10 @@ def main(args):
     # --------------------------------------------------------------------------
     dataset_true_val = None
 
+    # TODO 搞清楚每个task是如何实现sab和tab的
+
     for task_id, dataset_train in enumerate(scenario_train):
+        mylogger.info(f'start task: {task_id}')
         if args.max_task == task_id:
             print(f"Stop training because of max task")
             break
@@ -482,7 +504,10 @@ def main(args):
         # ----------------------------------------------------------------------
         # Ensembling
         if args.dytox:
+            # print(f'model_without_ddp.r before update_dytox: {model_without_ddp.r}')
             model_without_ddp = factory.update_dytox(model_without_ddp, task_id, args)
+            # patch_model_with_tome(model_without_ddp)
+            # print(f'model_without_ddp.r after update_dytox: {model_without_ddp.r}')
         # ----------------------------------------------------------------------
 
         # ----------------------------------------------------------------------
@@ -504,6 +529,9 @@ def main(args):
 
         # ----------------------------------------------------------------------
         # Data
+        # Jordan: 加载抽样后的数据
+        print(f'dataset_train len: {len(dataset_train)}')
+        print(f'dataset_val len: {len(dataset_val)}')
         loader_train, loader_val = factory.get_loaders(dataset_train, dataset_val, args)
         # ----------------------------------------------------------------------
 
@@ -518,6 +546,7 @@ def main(args):
             linear_scaled_lr = base_lr * args.batch_size * utils.get_world_size() / 512.0
 
         args.lr = linear_scaled_lr
+        # print(f'model_without_ddp.r before create_optimizer: {model_without_ddp.r}')
         optimizer = create_optimizer(args, model_without_ddp)
         lr_scheduler, _ = create_scheduler(args, optimizer)
         # ----------------------------------------------------------------------
@@ -544,18 +573,24 @@ def main(args):
         else:
             epochs = args.epochs
 
+        # print(f'model_without_ddp.r before set to model: {model_without_ddp.r}')
         if args.distributed:
+            print(f'distributed mode')
             del model
             model = torch.nn.parallel.DistributedDataParallel(
                 model_without_ddp, device_ids=[args.gpu], find_unused_parameters=True)
             torch.distributed.barrier()
         else:
+            print(f'none distributed mode')
             model = model_without_ddp
+            # patch_model_with_tome(model)
 
         model_without_ddp.nb_epochs = epochs
         model_without_ddp.nb_batch_per_epoch = len(loader_train)
+        print(f'loader_train: {len(loader_train)}')
 
         # Init SAM, for DyTox++ (see appendix) ---------------------------------
+        # Jordan: SAM不是SAB，不要搞混了，仅在DyTox++模式才需要
         sam = None
         if args.sam_rho > 0. and 'tr' in args.sam_mode and ((task_id > 0 and args.sam_skip_first) or not args.sam_skip_first):
             if args.sam_final is not None:
@@ -575,10 +610,12 @@ def main(args):
 
         print(f"Start training for {epochs-initial_epoch} epochs")
         max_accuracy = 0.0
+        # Jordan: 完成所有epoch的训练
         for epoch in range(initial_epoch, epochs):
             if args.distributed:
                 loader_train.sampler.set_epoch(epoch)
 
+            # Jordan: 调用deit的训练方法开始每个epoch的训练
             train_stats = train_one_epoch(
                 model, criterion, loader_train,
                 optimizer, device, epoch, task_id, loss_scaler,
@@ -680,6 +717,7 @@ def main(args):
         # ----------------------------------------------------------------------
 
         # Init SAM, for DyTox++ (see appendix) ---------------------------------
+        # Jordan: 仅在DyTox++才使用SAM
         sam = None
         if args.sam_rho > 0. and 'ft' in args.sam_mode and ((task_id > 0 and args.sam_skip_first) or not args.sam_skip_first):
             if args.sam_final is not None:
@@ -697,6 +735,7 @@ def main(args):
             )
         # ----------------------------------------------------------------------
 
+        # Jordan: 开始finetuning，如果需要
         if args.finetuning and memory and (task_id > 0 or scenario_train.nb_classes == args.initial_increment) and not skipped_task:
             dataset_finetune = get_finetuning_dataset(dataset_train, memory, args.finetuning, args.oversample_memory_ft, task_id)
             print(f'Finetuning phase of type {args.finetuning} with {len(dataset_finetune)} samples.')
@@ -744,6 +783,7 @@ def main(args):
 
             model_without_ddp.end_finetuning()
 
+        # Jordan: 开始每个task的eval
         eval_and_log(
             args, output_dir, model, model_without_ddp, optimizer, lr_scheduler,
             epoch, task_id, loss_scaler, max_accuracy,
@@ -767,6 +807,14 @@ def main(args):
             with open(log_path, 'a+') as f:
                 f.write(json.dumps(log_store['summary']) + '\n')
 
+# def patch_model_with_tome(model: torch.nn.Module):
+    # if not hasattr(model, 'cls_token'):
+        # print(dir(model))
+        # model.cls_token = model.task_tokens[0]
+    # tome.patch.timm(model)
+    # model.r = TOME_R
+    # print(f'model.r after patch: {model.r}')
+
 
 def load_options(args, options):
     varargs = vars(args)
@@ -786,9 +834,15 @@ def load_options(args, options):
 
 
 if __name__ == '__main__':
+    # real_50会出现maximum recursion depth exceeded while calling a Python object错误，因此这里设置运行的最大循环次数到10000（默认是1000）
+    import sys
+    sys.setrecursionlimit(10000)
+
     parser = argparse.ArgumentParser('DyTox training and evaluation script', parents=[get_args_parser()])
     args = parser.parse_args()
     utils.init_distributed_mode(args)
+    # real_50不采用distrubuted模式
+    args.distributed = False
 
     if args.options:
         name = load_options(args, args.options)

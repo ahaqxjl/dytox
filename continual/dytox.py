@@ -111,6 +111,10 @@ class DyTox(nn.Module):
             self.tabs = transformer.blocks[transformer.local_up_to_layer:]
             self.task_tokens = nn.ParameterList([transformer.cls_token])
 
+            # TODO 这里直接改可能会有问题，因为DyTox使用task token而不是class token，而且TAB的使用是DyTox的精髓，如果这里直接用cls_tokens可能不对
+            # self.cls_token =transformer.cls_token
+            self.blocks = transformer.blocks
+
         if self.individual_classifier != '':
             in_dim, out_dim = self._get_ind_clf_dim()
             self.head = nn.ModuleList([

@@ -4,4 +4,7 @@ checkpoints/
 logs/
 .vscode
 .ipynb_checkpoints
-
+MY_PATH_TO_DATASET/
+PATH_TO_SAVE_CHECKPOINTS/
+checkponts/
+*.log*

@@ -12,6 +12,8 @@ from collections import defaultdict, deque
 import datetime
 import warnings
 
+import inspect
+
 import torch
 from torch import nn
 import torch.distributed as dist
@@ -142,6 +144,8 @@ class MetricLogger(object):
         ]
         if torch.cuda.is_available():
             log_msg.append('max mem: {memory:.0f}')
+        # real_50会超出最大循环限制，这里监控循环使用情况　
+        log_msg.append(f'stack size: {len(inspect.stack())}')
         log_msg = self.delimiter.join(log_msg)
         MB = 1024.0 * 1024.0
         for obj in iterable:

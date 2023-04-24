@@ -18,8 +18,23 @@ import continual.utils as utils
 from continual.losses import DistillationLoss
 from continual.pod import pod_loss
 
+import tome
+
 
 CE = SoftTargetCrossEntropy()
+
+TOME_R = 8
+
+
+def patch_model_with_tome(model: torch.nn.Module):
+    # if not hasattr(model, 'cls_token'):
+    #     print(dir(model))
+    #     model.cls_token = model.task_tokens[0]
+    tome.patch.timm(model)
+    model.r = TOME_R
+    print(f'model.r after patch: {model.r}')
+    if model.r == 0:
+        print(f'patch failed, model.r={model.r}')
 
 
 def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
@@ -33,6 +48,12 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
                     loader_memory=None,
                     pod=None, pod_scales=[1]):
     """Code is a bit ugly to handle SAM, sorry! :upside_down_face:"""
+    # TODO For ToMe Only
+    if isinstance(model, torch.nn.parallel.DistributedDataParallel):
+       patch_model_with_tome(model.module) 
+    else:
+        patch_model_with_tome(model)
+
     model.train(set_training_mode)
     metric_logger = utils.MetricLogger(delimiter="  ")
     metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))

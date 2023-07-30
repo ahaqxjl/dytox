@@ -488,6 +488,7 @@ def main(args):
                 for _ in range(args.oversample_memory):
                     dataset_train.add_samples(*memory.get())
                 print(f"{len(dataset_train) - previous_size} samples added from memory.")
+                print(f"{len(dataset_train)} samples in total.")
 
             if args.only_ft:
                 dataset_train = get_finetuning_dataset(dataset_train, memory, 'balanced')
@@ -530,8 +531,8 @@ def main(args):
         # ----------------------------------------------------------------------
         # Data
         # Jordan: 加载抽样后的数据
-        print(f'dataset_train len: {len(dataset_train)}')
-        print(f'dataset_val len: {len(dataset_val)}')
+        # print(f'dataset_train len: {len(dataset_train)}')
+        # print(f'dataset_val len: {len(dataset_val)}')
         loader_train, loader_val = factory.get_loaders(dataset_train, dataset_val, args)
         # ----------------------------------------------------------------------
 
@@ -841,8 +842,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser('DyTox training and evaluation script', parents=[get_args_parser()])
     args = parser.parse_args()
     utils.init_distributed_mode(args)
-    # real_50不采用distrubuted模式
-    args.distributed = False
+    # real_50 2-2不采用distrubuted模式
+    # real_50 8-8是否启用distributed对成功率影响巨大，不开启时大概70%左右，开启后99%左右
+    # args.distributed = False
 
     if args.options:
         name = load_options(args, args.options)

@@ -181,12 +181,16 @@ class GPSA(nn.Module):
         self.pos_proj.weight.data *= locality_strength
 
     def get_rel_indices(self, num_patches):
+        print(f'num_patches in get_rel_indices: {num_patches}')
+        # TODO Jordan 为什么需要get_rel_indices方法？
         img_size = int(num_patches**.5)
         rel_indices   = torch.zeros(1, num_patches, num_patches, 3)
         ind = torch.arange(img_size).view(1,-1) - torch.arange(img_size).view(-1, 1)
         indx = ind.repeat(img_size,img_size)
         indy = ind.repeat_interleave(img_size,dim=0).repeat_interleave(img_size,dim=1)
         indd = indx**2 + indy**2
+        print(f'rel_indices.shape: {rel_indices.shape}')
+        print(f'indd.shape: {indd.shape}')
         rel_indices[:,:,:,2] = indd.unsqueeze(0)
         rel_indices[:,:,:,1] = indy.unsqueeze(0)
         rel_indices[:,:,:,0] = indx.unsqueeze(0)

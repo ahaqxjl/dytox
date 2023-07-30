@@ -320,9 +320,12 @@ class DyTox(nn.Module):
         mask_heads = None
 
         for task_token in self.task_tokens:
+            # print(f'task_token shape: {task_token.shape}')
             task_token = task_token.expand(B, -1, -1)
+            # print(f'task_token shape after expand: {task_token.shape}')
 
             for blk in self.tabs:
+                # torch cot 用法 https://blog.csdn.net/qian2213762498/article/details/88795848
                 task_token, attn, v = blk(torch.cat((task_token, x), dim=1), mask_heads=mask_heads)
 
             attentions.append(attn)

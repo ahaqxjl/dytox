@@ -1,0 +1,153 @@
+ 2588  conda create -n dytox 
+ 2592  mkdir dytox
+ 2593  cd dytox
+ 2594  git clone https://github.com/arthurdouillard/dytox.git
+ 2595  conda create -n dytox 
+ 2596  conda activate dytox
+ 2598  cd dytox
+ 2619  bash train.sh 0,1 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2622  bash train.sh 0,1 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2628  conda activate dytox
+ 2629  cd incremental_learning/dytox
+ 2631  cd dytox
+ 2637  bash train.sh 0,1 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2646  conda remove --name dytox --all
+ 2649  conda remove --name dytox --all
+ 2650  conda create -n dytox python=3.8
+ 2651  conda activate dytox
+ 2655  bash train.sh 0,1 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2656  vim /home/deeplearning/.conda/envs/dytox/lib/python3.8/site-packages/timm/models/helpers.py
+ 2657  cd /home/deeplearning/.conda/envs/dytox/lib/python3.8/site-packages/timm/models/
+ 2662  bash train.sh 0,1 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2664  bash train.sh 0,1 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2668  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2670  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2687  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2700  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2702  conda remove --name dytox --all
+ 2706  conda create -n dytox 
+ 2707  conda activate dytox
+ 2709  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2713  conda remove --name dytox --all
+ 2721  conda remove --name dytox --all
+ 2729  conda create -n dytox 
+ 2730  conda activate dytox
+ 2733  conda remove --name dytox --all
+ 2744  conda create -n dytox python=3.9
+ 2745  conda create -n dytox python=3.8
+ 2746  conda create -n dytox python=3.7
+ 2747  conda create -n dytox python=3.9
+ 2748  conda activate dytox
+ 2751  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2753  conda remove --name dytox --all
+ 2754  conda create -n dytox python=3.6
+ 2755  conda activate dytox
+ 2760  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2763  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2770  conda remove --name dytox --all
+ 2771  conda create -n dytox python=3.8
+ 2772  conda activate dytox
+ 2774  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2782  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2785  cd incremental_learning/dytox/dytox
+ 2789  conda activate dytox
+ 2790  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2792  conda create -n dytox_171 python=3.8
+ 2794  conda activate dytox
+ 2798  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2799  conda activate dytox_171
+ 2805  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2807  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000
+ 2818  conda activate dytox_171
+ 2819  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000 &
+ 2829  conda activate dytox_171
+ 2831  bash train.sh 0 \\n    --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml \\n    --name dytox \\n    --data-path MY_PATH_TO_DATASET \\n    --output-basedir PATH_TO_SAVE_CHECKPOINTS \\n    --memory-size 1000 &
+ 2834  bash nohup train.sh 0 --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS --memory-size 1000 > output.log 2>&1 &
+ 2837  bash train.sh 0 --options options/data/cifar100_2-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS --memory-size 1000 > output.log 2>&1 &
+ 2871  cd 28_dytox
+ 2890  conda remove --name dytox --all
+ 2901  source /home/hnluchuan/anaconda3/bin/activate dytox_171
+ 2912  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS --memory-size 1000 > output.log 2>&1 &
+ 2920  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output.log 2>&1 &
+ 2925  source /home/hnluchuan/anaconda3/bin/activate dytox_171
+ 2993  conda activate dytox_171
+ 2995  cd dytox
+ 2997  cd dytox
+ 2998  conda activate dytox_171
+ 3011  cd ../../dytox/dytox
+ 3013  conda activate dytox_171
+ 3030  conda activate dytox_171
+ 3061  conda activate dytox_171
+ 3160  cd dytox
+ 3162  nohup bash train.sh 0 --options options/data/cifar100_50-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS --memory-size 1000 &
+ 3168  active dytox_171
+ 3169  activate dytox_171
+ 3174  activate dytox_171
+ 3177  nohup bash train.sh 0 --options options/data/cifar100_50-2.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS --memory-size 1000 &
+ 3179  tail -200f incremental_learning/dytox/dytox/nohup.out
+ 3181  tail -200f incremental_learning/dytox/dytox/nohup.out
+ 3182  cd incremental_learning/dytox/dytox
+ 3184  bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path /data/datasets/meal300 --memory-size 10000
+ 3185  cp -r /data/datasets/meal300/ /home/deeplearning/incremental_learning/dytox/dytox/MY_PATH_TO_DATASET
+ 3186  bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000
+ 3187  nohup bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path /data/datasets/meal300 --memory-size 10000 &
+ 3189  nohup bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000 &
+ 3192  ps -ef | grep dytox
+ 3194  ps -ef | grep dytox
+ 3196  ps -ef | grep dytox
+ 3198  ps -ef | grep dytox
+ 3202  bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000
+ 3204  nohup bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000 &
+ 3205  ps -ef | grep dytox
+ 3207  ps -ef | grep dytox
+ 3208  nohup bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000 &
+ 3210  cd incremental_learning/dytox/dytox
+ 3212  ps -ef | grep dytox
+ 3214  ps -ef | grep dytox
+ 3217  nohup bash train.sh 0 --options options/data/meal_20-20.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000 &
+ 3220  nohup bash train.sh 0 --options options/data/meal_20-20.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000 &
+ 3224  tail -200f /home/deeplearning/incremental_learning/dytox/dytox/nohup.out
+ 3225  conda activate dytox_171
+ 3228  tail -200f /home/deeplearning/incremental_learning/dytox/dytox/nohup.out
+ 3230  tail -200f /home/deeplearning/incremental_learning/dytox/dytox/nohup.out
+ 3232  tail -200f /home/deeplearning/incremental_learning/dytox/dytox/nohup.out
+ 3233  cd incremental_learning/dytox/dytox
+ 3235  cd incremental_learning/dytox/dytox
+ 3241  nohup bash train.sh 0 --options options/data/meal_8-8.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000 &
+ 3255  nohup bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300 --memory-size 10000 &
+ 3271  conda activate dytox_171
+ 3286  conda activate dytox_171
+ 3324  cd dytox/dytox
+ 3344  conda activate dytox_171
+ 3346  history | grep dytox
+ 3347  history | grep dytox | grep 10-10
+ 3349  conda activate dytox_171
+ 3363  cd incremental_learning/dytox/dytox
+ 3365  history|grep dytox|grep 10-10
+ 3366  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output.log 2>&1 &
+ 3369  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output.log 2>&1 &
+ 3371  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output.log 2>&1 &
+ 3373  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output.log 2>&1 &
+ 3380  nohup bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output.log 2>&1 &
+ 3385  conda activate dytox_171
+ 3387  conda activate dytox_171
+ 3390  conda activate dytox_171
+ 3392  nohup bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox.log 2>&1 &
+ 3395  conda activate dytox_171
+ 3396  nohup bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox_tome.20230417.log 2>&1 &
+ 3398  nohup bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox_tome.20230417.log 2>&1 &
+ 3402  nohup bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox_tome.20230417.log 2>&1 &
+ 3404  nohup bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox_tome.20230417.log 2>&1 &
+ 3406  nohup bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox_tome.20230417.log 2>&1 &
+ 3408  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox_tome.20230417.log 2>&1 &
+ 3410  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox_tome.20230417.log 2>&1 
+ 3411  conda activate dytox_171
+ 3413  conda activate dytox_171
+ 3414  bash train.sh 0 --options options/data/cifar100_10-10.yaml options/data/cifar100_order1.yaml options/model/cifar_dytox.yaml --name dytox --data-path MY_PATH_TO_DATASET --output-basedir PATH_TO_SAVE_CHECKPOINTS > output_dytox_tome.20230417.log 2>&1 
+ 3415  conda activate dytox_171
+ 3417* conda activate dytox_171
+ 3418* history | grep dytox
+ 3419  nohup bash train.sh 0 --options options/data/meal_2-2.yaml options/model/meal_dytox.yaml  --name dytox --data-path MY_PATH_TO_DATASET/meal300/real_50 --output-basedir PATH_TO_SAVE_CHECKPOINTS > outpmeal_50_dytox_tome.20230418.log 2>&1 &
+ 3430  history|grep "--name dytox" > ../../../train_dytox_history.txt
+ 3431  history|grep'--name dytox' > ../../../train_dytox_history.txt
+ 3432  history|grep '--name dytox' > ../../../train_dytox_history.txt

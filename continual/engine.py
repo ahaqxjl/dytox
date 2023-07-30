@@ -23,16 +23,18 @@ import tome
 
 CE = SoftTargetCrossEntropy()
 
-TOME_R = 8
+TOME_R = 2
 
 
 def patch_model_with_tome(model: torch.nn.Module):
     # if not hasattr(model, 'cls_token'):
     #     print(dir(model))
     #     model.cls_token = model.task_tokens[0]
-    tome.patch.timm(model)
+    tome.patch.convit(model, prop_attn=False)
+    # print(f'model: {model}')
+    # 目前dispath后设置r值对准确率和训练时长没有影响，要找出问题出在哪里了
     model.r = TOME_R
-    print(f'model.r after patch: {model.r}')
+    # print(f'model.r after patch: {model.r}')
     if model.r == 0:
         print(f'patch failed, model.r={model.r}')
 
@@ -61,8 +63,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
     print_freq = 10
 
     for batch_index, (samples, targets, _) in enumerate(metric_logger.log_every(data_loader, print_freq, header)):
-        if batch_index == 0:
-            print(f'Image size is {samples.shape}.')
+        # if batch_index == 0:
+            # print(f'Image size is {samples.shape}.')
 
         samples = samples.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)

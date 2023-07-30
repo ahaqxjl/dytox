@@ -17,6 +17,7 @@ from timm.models.vision_transformer import Attention, Block, VisionTransformer
 from tome.merge import bipartite_soft_matching, merge_source, merge_wavg
 from tome.utils import parse_r
 
+# TODO 将timm的几处修改同步到ConViT中
 
 class ToMeBlock(Block):
     """
@@ -35,6 +36,7 @@ class ToMeBlock(Block):
         # Note: this is copied from timm.models.vision_transformer.Block with modifications.
         attn_size = self._tome_info["size"] if self._tome_info["prop_attn"] else None
         x_attn, metric = self.attn(self.norm1(x), attn_size)
+        # Jordan drop_path1和drop_path2目前没有用到
         x = x + self._drop_path1(x_attn)
 
         r = self._tome_info["r"].pop(0)
@@ -82,6 +84,7 @@ class ToMeAttention(Attention):
         attn = (q @ k.transpose(-2, -1)) * self.scale
 
         # Apply proportional attention
+        # Jordan 这里与原始的Attention不同
         if size is not None:
             attn = attn + size.log()[:, None, None, :, 0]
 
@@ -93,6 +96,7 @@ class ToMeAttention(Attention):
         x = self.proj_drop(x)
 
         # Return k as well here
+        # Jordan 返回值与原始的Attention不同
         return x, k.mean(1)
 
 
@@ -125,10 +129,11 @@ def apply_patch(
     For proportional attention, set prop_attn to True. This is only necessary when evaluating models off
     the shelf. For trianing and for evaluating MAE models off the self set this to be False.
     """
+    print(f'model.__class__: {model.__class__}')
     ToMeVisionTransformer = make_tome_class(model.__class__)
 
     model.__class__ = ToMeVisionTransformer
-    # print(dir(model))
+    print(f'dir(model): {dir(model)}')
    
     model.r = 0
     model._tome_info = {
@@ -144,9 +149,15 @@ def apply_patch(
     if hasattr(model, "dist_token") and model.dist_token is not None:
         model._tome_info["distill_token"] = True
 
+    # TODO 需要对这里进行改造，否则tome的token merging无法生效，也就是没有执行bipartite_soft_matching
+    # 此处改造工作量较大，因为tome的forward与DyTox不同，block和attention也不同
     for module in model.modules():
+        print(f'module type: {type(module)}')
+        # Jordan 一个Block是由Attention和MLP等组成的
         if isinstance(module, Block):
+            print(f'current module is instance of Block')
             module.__class__ = ToMeBlock
             module._tome_info = model._tome_info
         elif isinstance(module, Attention):
+            print(f'current module is instance of Attention')
             module.__class__ = ToMeAttention

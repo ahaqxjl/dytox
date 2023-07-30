@@ -33,6 +33,8 @@ def bipartite_soft_matching(
 
     When enabled, the class token and distillation tokens won't get merged.
     """
+    # print(f'metric shape: {metric.shape}')
+    B, N, C = metric.shape
     protected = 0
     if class_token:
         protected += 1
@@ -41,7 +43,11 @@ def bipartite_soft_matching(
 
     # We can only reduce by a maximum of 50% tokens
     t = metric.shape[1]
+    # print(f'N: {N}')
+    r = N - (int(N ** 0.5) - r) ** 2
+    # print(f'r: {r}')
     r = min(r, (t - protected) // 2)
+    # print(f'r: {r}')
 
     if r <= 0:
         return do_nothing, do_nothing
@@ -217,6 +223,19 @@ def merge_wavg(
     if size is None:
         size = torch.ones_like(x[..., 0, None])
 
+    # print(f'x.shape: {x.shape}')
+    # print(f'size.shape: {size.shape}')
+    # DyTox中TAB是在SAB基础上加了task token得到的，因此会在第二维数量加1，
+    # 此处进入TAB时，x是[64, 82, 384]矩阵，但size是[64, 81, 1]矩阵，
+    # *在torch中为点乘，需要保证w*x时，w的列数只能为 1 或 与x的列数相等（即n），w的行数与x的行数相等 才能进行乘法运算
+    # 详见https://www.cnblogs.com/liuq/p/9330134.html
+    # 所以需要在两者不一致时，进行处理，处理方法是对size进行补齐或者对x进行裁剪
+    x_B, x_N, x_C = x.shape
+    s_B, s_N, s_C = size.shape
+    if x_N != s_N:
+        # TAB中x追加了task token，因此维度会有差异
+        gap = torch.ones(s_B, 1, 1).cuda()
+        size = torch.cat((size, gap), dim=1)
     x = merge(x * size, mode="sum")
     size = merge(size, mode="sum")
 

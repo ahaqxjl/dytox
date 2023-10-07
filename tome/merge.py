@@ -44,6 +44,7 @@ def bipartite_soft_matching(
     # We can only reduce by a maximum of 50% tokens
     t = metric.shape[1]
     # print(f'N: {N}')
+    # 为了适配ConVit和DyTox，需要做开方运算，因此改造ToMe，按照平方根递减进行Merge
     r = N - (int(N ** 0.5) - r) ** 2
     # print(f'r: {r}')
     r = min(r, (t - protected) // 2)
@@ -54,7 +55,11 @@ def bipartite_soft_matching(
 
     with torch.no_grad():
         metric = metric / metric.norm(dim=-1, keepdim=True)
+        # Partition the tokens into two sets A and B of roughly equal size.
         a, b = metric[..., ::2, :], metric[..., 1::2, :]
+        # TODO 这里用于计算ab两个的点之间相似度？网上都说用CosineSimilarity来做，没有搜到用矩阵相乘直接算的
+        # 好像也有人采用类似方法的：https://stackoverflow.com/questions/50411191/how-to-compute-the-cosine-similarity-in-pytorch-for-all-rows-in-a-matrix-with-re
+        # 先不纠结此处
         scores = a @ b.transpose(-1, -2)
 
         if class_token:

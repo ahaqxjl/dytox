@@ -27,6 +27,7 @@ TOME_R = 2
 
 
 def patch_model_with_tome(model: torch.nn.Module):
+    # TODO 尝试r=0时，不执行patch，以观察增量任务较多后期速度很慢是否是增肌了ToMe导致
     # if not hasattr(model, 'cls_token'):
     #     print(dir(model))
     #     model.cls_token = model.task_tokens[0]
